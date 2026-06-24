@@ -1,0 +1,27 @@
+{
+  "name": "uptasks_backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx --watch ./src/index.ts"
+  },
+  "keywords": [],
+  "author": "Camilo Velasquez Botero",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-validator": "^7.3.2",
+    "mongodb": "^7.3.0",
+    "mongoose": "^9.7.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "tsx": "^4.22.4",
+    "typescript": "^6.0.3"
+  }
+}
