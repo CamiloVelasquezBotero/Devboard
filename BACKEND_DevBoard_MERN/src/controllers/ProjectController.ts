@@ -9,18 +9,18 @@ export class ProjectController {
         try {
             /* await Project,create(req.body)  // De esta forma tambien lo podemos crear directamente*/
             await project.save() /* Save the project with mongoose */
-            res.send({message: 'Project Created successfully'})
+            res.status(201).json({message: 'Project Created successfully'})
         } catch (error) {
-            console.log(error)
+            console.log(`There was an error creating the project: ${error}`)
         }
     }
 
     static getAllProjects = async (req:Request, res:Response) => {
         try {
             const projects = await Project.find()
-            res.json(projects)
+            res.status(200).json(projects)
         } catch (error) {
-            console.log(error)
+            console.log(`There was an error getting the projects: ${error}`)
         }
     }
 
@@ -35,9 +35,9 @@ export class ProjectController {
             }
 
             /* Send the project found */
-            res.json(project)
+            res.status(200).json(project)
         } catch (error) {
-            
+            console.log(`There was an error getting the project: ${error}`)
         }
     }
 
@@ -58,9 +58,9 @@ export class ProjectController {
             project.description = req.body.description
             /* Save the project */
             await project.save()
-            res.send('Proyect Updated')
+            res.status(200).send('Proyect Updated')
         } catch (error) {
-            console.log(error)
+            console.log(`There was an error updating the project: ${error}`)
         }
     }
 
@@ -78,9 +78,9 @@ export class ProjectController {
             }
 
             await project.deleteOne()
-            res.send('Proyect Deleted')
+            res.status(200).send('Proyect Deleted')
         } catch (error) {
-            console.log(error)
+            console.log(`There was an error deleting the project: ${error}`)
         }
     }
 } 

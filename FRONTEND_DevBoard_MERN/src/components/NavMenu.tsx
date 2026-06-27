@@ -7,7 +7,7 @@ export default function NavMenu() {
 
   return (
     <Popover className="relative">
-      <Popover.Button className="inline-flex items-center gap-x-1 text-sm font-semibold leading-6 p-1 rounded-lg bg-purple-400">
+      <Popover.Button className="inline-flex items-center gap-x-1 text-sm font-semibold leading-6 p-1 rounded-lg bg-purple-400 cursor-pointer">
         <Bars3Icon className='w-8 h-8 text-white ' />
       </Popover.Button>
 
@@ -22,21 +22,21 @@ export default function NavMenu() {
       >
         <Popover.Panel className="absolute left-1/2 z-10 mt-5 flex w-screen lg:max-w-min -translate-x-1/2 lg:-translate-x-48">
           <div className="w-full lg:w-56 shrink rounded-xl bg-white p-4 text-sm font-semibold leading-6 text-gray-900 shadow-lg ring-1 ring-gray-900/5">
-            <p className='text-center'>Hola: Usuario</p>
+            <p className='text-center'>Hi: User</p>
             <Link
               to='/profile'
-              className='block p-2 hover:text-purple-950'
-            >Mi Perfil</Link>
+              className='block p-2 hover:text-purple-950 cursor-pointer'
+            >My Profile</Link>
             <Link
               to='/'
-              className='block p-2 hover:text-purple-950'
-            >Mis Proyectos</Link>
+              className='block p-2 hover:text-purple-950 cursor-pointer'
+            >My Projects</Link>
             <button
-              className='block p-2 hover:text-purple-950'
+              className='block p-2 hover:text-purple-950 cursor-pointer'
               type='button'
               onClick={() => { }}
             >
-              Cerrar Sesión
+              Log Out
             </button>
           </div>
         </Popover.Panel>

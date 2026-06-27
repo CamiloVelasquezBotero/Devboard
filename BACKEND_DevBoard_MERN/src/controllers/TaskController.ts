@@ -17,7 +17,7 @@ export class TaskController {
             await Promise.allSettled([ task.save(), req.project.save() ])
 
             /* if all is correctly we'll send the message */
-            res.status(201).json({ message: 'Task Created Successfully', task })
+            res.status(201).send('Task Created Successfully')
         } catch (error) {
             res.status(500).json({ error: 'Error creating task' })
             console.log(error)
@@ -29,7 +29,7 @@ export class TaskController {
             /* We're gonna get the tasks that have the id of the project that we got in the request, and additional of this
             we're gonna get the project this task belongs to with "populate" */
             const tasks = await Task.find({project: req.project._id}).populate('project')
-            res.json(tasks)
+            res.status(200).json(tasks)
         } catch (error) {
             res.status(500).json({ error: 'There was an error getting the tasks' })
         }
@@ -37,7 +37,7 @@ export class TaskController {
 
     static getTaskById = async (req:Request, res:Response) => {
         try {
-            res.json(req.task)
+            res.status(200).json(req.task)
         } catch (error) {
             res.status(500).json({ error: 'There was an error getting the tasks' })
         }
@@ -50,7 +50,7 @@ export class TaskController {
             req.task.description = req.body.description
             await req.task.save()
 
-            res.send('Task updated correctly')
+            res.status(200).send('Task updated correctly')
         } catch (error) {
             res.status(500).json({ error: 'There was an error getting the tasks' })
         }
@@ -65,7 +65,7 @@ export class TaskController {
             /* Save the changes of the tasks and the project tasks */
             Promise.allSettled([ req.task.deleteOne(), req.project.save() ])
 
-            res.send('Task deleted correctly')
+            res.status(200).send('Task deleted correctly')
         } catch (error) {
             res.status(500).json({ error: 'There was an error getting the tasks' })
         }
@@ -78,7 +78,7 @@ export class TaskController {
             req.task.status = status
             await req.task.save()
 
-            res.send('Task status updated correctly')
+            res.status(200).send('Task status updated correctly')
         } catch (error) {
             res.status(500).json({ error: 'There was an error getting the tasks' })
         }
