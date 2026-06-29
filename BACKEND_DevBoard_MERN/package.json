@@ -1,9 +1,10 @@
 {
-  "name": "uptasks_backend",
+  "name": "DevBoard_backend",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx --watch ./src/index.ts"
+    "dev": "tsx --watch ./src/index.ts",
+    "dev:api": "tsx --watch ./src/index.ts --api" 
   },
   "keywords": [],
   "author": "Camilo Velasquez Botero",

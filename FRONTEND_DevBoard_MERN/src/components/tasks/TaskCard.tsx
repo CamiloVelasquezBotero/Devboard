@@ -1,13 +1,34 @@
-import { Menu, Transition } from "@headlessui/react"
-import type { Task } from "../../types"
-import { EllipsisVerticalIcon } from "@heroicons/react/20/solid"
 import { Fragment } from "react/jsx-runtime"
+import { useNavigate, useParams } from "react-router-dom"
+import { EllipsisVerticalIcon } from "@heroicons/react/20/solid"
+import { Menu, Transition } from "@headlessui/react"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import type { Task } from "../../types"
+import { deleteTaskById } from "../../api/TaskAPI"
+import { toast } from "react-toastify"
 
 type TaskCardProps = {
     task: Task
 }
 
 export default function TaskCard({ task }: TaskCardProps) {
+    const navigate = useNavigate()
+    const params = useParams()
+    const projectId = params.projectId!
+
+    const queryClient = useQueryClient()
+    /* React-Query */
+    const { mutate } = useMutation({
+        mutationFn: deleteTaskById,
+        onError: (error) => {
+            toast.error(error.message)
+        },
+        onSuccess: (data) => {
+            toast.success(data)
+            queryClient.invalidateQueries({ queryKey: ['project', projectId] })
+        }
+    })
+
     return (
         <li className="p-5 bg-white border-slate-300 flex justify-between gap-3">
             <div className="min-w-0 flex flex-col gap-y-4">
@@ -20,7 +41,7 @@ export default function TaskCard({ task }: TaskCardProps) {
 
             <div className="flex shrink-0  gap-x-6">
                 <Menu as="div" className="relative flex-none">
-                    <Menu.Button className="-m-2.5 block p-2.5 text-gray-500 hover:text-gray-900">
+                    <Menu.Button className="-m-2.5 block p-2.5 text-gray-500 hover:text-gray-900 cursor-pointer">
                         <span className="sr-only">opciones</span>
                         <EllipsisVerticalIcon className="h-9 w-9" aria-hidden="true" />
                     </Menu.Button>
@@ -30,19 +51,32 @@ export default function TaskCard({ task }: TaskCardProps) {
                         <Menu.Items
                             className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
                             <Menu.Item>
-                                <button type='button' className='block px-3 py-1 text-sm leading-6 text-gray-900'>
-                                    Ver Tarea
+                                <button
+                                    type='button'
+                                    className='block px-3 py-1 text-sm leading-6 text-gray-900 cursor-pointer'
+                                    onClick={() => navigate(location.pathname + `?viewTask=${task._id}`)}
+
+                                >
+                                    See Task
                                 </button>
                             </Menu.Item>
                             <Menu.Item>
-                                <button type='button' className='block px-3 py-1 text-sm leading-6 text-gray-900'>
-                                    Editar Tarea
+                                <button
+                                    type='button'
+                                    className='block px-3 py-1 text-sm leading-6 text-gray-900 cursor-pointer'
+                                    onClick={() => navigate(location.pathname + `?editTask=${task._id}`)}
+                                >
+                                    Edit Task
                                 </button>
                             </Menu.Item>
 
                             <Menu.Item>
-                                <button type='button' className='block px-3 py-1 text-sm leading-6 text-red-500'>
-                                    Eliminar Tarea
+                                <button
+                                    type='button'
+                                    className='block px-3 py-1 text-sm leading-6 text-red-500 cursor-pointer'
+                                    onClick={() => mutate({ projectId, taskId: task._id })}
+                                >
+                                    Delete Task
                                 </button>
                             </Menu.Item>
                         </Menu.Items>

@@ -24,6 +24,7 @@ export type ProjectFormData = Pick<Project, 'projectName' | 'clientName' | 'desc
 /*  ---------------------------------------------- TASKS ----------------------------------------------*/
 
 export const taskStatusSchema = z.enum(["pending", "onHold", "inProgress", "underReview", "completed"]) /* we validating if is one of the folloging status */
+export type TaskStatus = z.infer<typeof taskStatusSchema>
 
 export const taskSchema = z.object({
     _id: z.string(),
@@ -31,6 +32,8 @@ export const taskSchema = z.object({
     description: z.string(),
     project: z.string(),
     status: taskStatusSchema,
+    createdAt: z.string(),
+    updatedAt: z.string()
 })
 
 export type Task = z.infer<typeof taskSchema>

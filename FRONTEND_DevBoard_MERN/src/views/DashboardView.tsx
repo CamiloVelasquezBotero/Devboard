@@ -1,7 +1,7 @@
 import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { EllipsisVerticalIcon } from '@heroicons/react/20/solid'
-import { Link } from "react-router-dom"
+import { Link, Navigate } from "react-router-dom"
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import { deleteProject, getProjects } from "../api/ProjectApi"
 import { toast } from 'react-toastify'
@@ -28,6 +28,7 @@ export default function DashboardView() {
   })
 
   if (isLoading) return 'Cargando...'
+  if (isError) return <Navigate to={'404'} />
 
   if (data) return (
     <>
