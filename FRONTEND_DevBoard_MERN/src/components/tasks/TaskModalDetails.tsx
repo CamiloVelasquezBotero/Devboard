@@ -4,7 +4,7 @@ import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getTaskById, updateStatus } from '../../api/TaskAPI';
 import { toast } from 'react-toastify';
-import { formatDate } from '../../utils/axios';
+import { formatDate } from '../../utils/formatDate';
 import { statusTranslations } from "../../locales/en"
 import type { TaskStatus } from '../../types';
 

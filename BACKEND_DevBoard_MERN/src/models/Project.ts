@@ -1,5 +1,6 @@
 import mongoose, { Schema, Document, PopulatedDoc, Types } from 'mongoose' /* We import the mongoose ODM and the types */
 import { TaskType } from './Task'
+import { UserType } from './User'
 
 /* Create the type of the model passing it throgh the generic type */
 export type ProjectType = Document & {
@@ -7,6 +8,7 @@ export type ProjectType = Document & {
     clientName: string
     description: string
     tasks: PopulatedDoc<TaskType & Document>[] /* it will be many then we pass it like an array */
+    manager: PopulatedDoc<UserType & Document>
 }
 
 /* Create the Schema */
@@ -31,7 +33,11 @@ const ProjectSchema:Schema = new Schema({
             type: Types.ObjectId,
             ref: 'Task' /* the reference of the another model */
         }
-    ]
+    ],
+    manager: {
+        type: Types.ObjectId,
+        ref: 'User'
+    }
 }, {timestamps: true})
 
 /* Create the Model and export it*/

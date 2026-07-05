@@ -4,9 +4,12 @@ import Project from "../models/Project";
 export class ProjectController {
 
     static createProject = async (req:Request, res:Response) => {
-        const project = new Project(req.body) /* create the new project with the model that we created in mongoDB and pass the req.body values */
-
         try {
+            const project = new Project(req.body) /* create the new project with the model that we created in mongoDB and pass the req.body values */
+            
+            // Assing a manager to the project
+            project.manager = req.user._id
+
             /* await Project,create(req.body)  // De esta forma tambien lo podemos crear directamente*/
             await project.save() /* Save the project with mongoose */
             res.status(201).json({message: 'Project Created successfully'})

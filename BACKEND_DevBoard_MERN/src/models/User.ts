@@ -4,7 +4,7 @@ export type UserType = Document & {
     email: string
     password: string
     name: string
-    confirmed: string
+    confirmed: boolean
 }
 
 const userSchema:Schema = new Schema({

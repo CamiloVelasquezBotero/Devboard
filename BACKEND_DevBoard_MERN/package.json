@@ -4,26 +4,32 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsx --watch ./src/index.ts",
-    "dev:api": "tsx --watch ./src/index.ts --api" 
+    "dev:api": "tsx --watch ./src/index.ts --api"
   },
   "keywords": [],
   "author": "Camilo Velasquez Botero",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "colors": "^1.4.0",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "express-validator": "^7.3.2",
+    "jsonwebtoken": "^9.0.3",
     "mongodb": "^7.3.0",
     "mongoose": "^9.7.1",
-    "morgan": "^1.11.0"
+    "morgan": "^1.11.0",
+    "nodemailer": "^9.0.3"
   },
   "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/morgan": "^1.9.10",
+    "@types/nodemailer": "^8.0.1",
     "tsx": "^4.22.4",
     "typescript": "^6.0.3"
   }

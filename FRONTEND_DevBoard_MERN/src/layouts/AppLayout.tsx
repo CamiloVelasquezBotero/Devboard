@@ -8,10 +8,10 @@ export default function AppLayout() {
   return (
     <>
         <header
-            className="bg-gray-800 py-5 px-10"
+            className="bg-gray-800 px-10"
         >
             <div className="max-w-screen-2xl mx-auto flex flex-col lg:flex-row justify-between items-center">
-                <div className="w-64 ml-10">
+                <div className="w-64 ml-10 mb-4">
                     <Link to={'/'}>
                         <Logo /> 
                     </Link>
