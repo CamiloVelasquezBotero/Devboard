@@ -20,7 +20,12 @@ export class ProjectController {
 
     static getAllProjects = async (req:Request, res:Response) => {
         try {
-            const projects = await Project.find()
+            const projects = await Project.find({
+                $or: [
+                    { manager: {$in: req.user._id} },
+                    { team: req.user._id }
+                ]
+            })
             res.status(200).json(projects)
         } catch (error) {
             console.log(`There was an error getting the projects: ${error}`)
@@ -34,6 +39,12 @@ export class ProjectController {
             const project = await Project.findById(id).populate('tasks')
             if(!project) {
                 const error = new Error('¡Project not found!')
+                return res.status(404).json({ error: error.message }) 
+            }
+
+            // Verify if the user is the manager of the project
+            if(project.manager.toString() !== req.user._id.toString() && !project.team.includes(req.user._id)) {
+                const error = new Error('¡Unauthorized!')
                 return res.status(404).json({ error: error.message }) 
             }
 
@@ -53,6 +64,12 @@ export class ProjectController {
             if(!project) {
                 const error = new Error('¡Project not found!')
                 return res.status(404).json({ error: error.message })
+            }
+
+            // Verify if the user is the manager of the project
+            if(project.manager.toString() !== req.user._id.toString()) {
+                const error = new Error('¡Only the manager can update this project!')
+                return res.status(404).json({ error: error.message }) 
             }
 
             /* Update the Values of the project */
@@ -78,6 +95,12 @@ export class ProjectController {
             if(!project) {
                 const error = new Error('¡Project not found!')
                 return res.status(404).json({ error: error.message })
+            }
+
+            // Verify if the user is the manager of the project
+            if(project.manager.toString() !== req.user._id.toString()) {
+                const error = new Error('¡Only the manager can delete this project!')
+                return res.status(404).json({ error: error.message }) 
             }
 
             await project.deleteOne()

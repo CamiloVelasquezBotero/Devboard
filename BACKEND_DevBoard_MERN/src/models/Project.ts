@@ -9,10 +9,11 @@ export type ProjectType = Document & {
     description: string
     tasks: PopulatedDoc<TaskType & Document>[] /* it will be many then we pass it like an array */
     manager: PopulatedDoc<UserType & Document>
+    team: PopulatedDoc<UserType & Document>[]
 }
 
 /* Create the Schema */
-const ProjectSchema:Schema = new Schema({
+const ProjectSchema: Schema = new Schema({
     projectName: {
         type: String,
         required: true,
@@ -37,8 +38,14 @@ const ProjectSchema:Schema = new Schema({
     manager: {
         type: Types.ObjectId,
         ref: 'User'
-    }
-}, {timestamps: true})
+    },
+    team: [
+        {
+            type: Types.ObjectId,
+            ref: 'User'
+        }
+    ]
+}, { timestamps: true })
 
 /* Create the Model and export it*/
 const Project = mongoose.model<ProjectType>('Project', ProjectSchema)

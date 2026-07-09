@@ -20,7 +20,7 @@ export class TaskController {
             res.status(201).send('Task Created Successfully')
         } catch (error) {
             res.status(500).json({ error: 'Error creating task' })
-            console.log(error)
+            console.error(error)
         }
     }
 
@@ -32,14 +32,21 @@ export class TaskController {
             res.status(200).json(tasks)
         } catch (error) {
             res.status(500).json({ error: 'There was an error getting the tasks' })
+            console.error(error)
         }
     }
 
     static getTaskById = async (req:Request, res:Response) => {
         try {
-            res.status(200).json(req.task)
+            /* Consult to send the task complete */
+            const task = await Task.findById(req.task._id)
+                .populate({ path: 'completedBy.user', select: 'id name email' })
+                .populate({ path: 'notes', populate: {path: 'createdBy', select: 'id name email'} })
+            
+            res.status(200).json(task)
         } catch (error) {
             res.status(500).json({ error: 'There was an error getting the tasks' })
+            console.error(error)
         }
     }
 
@@ -53,6 +60,7 @@ export class TaskController {
             res.status(200).send('Task updated correctly')
         } catch (error) {
             res.status(500).json({ error: 'There was an error getting the tasks' })
+            console.error(error)
         }
     }
 
@@ -68,6 +76,7 @@ export class TaskController {
             res.status(200).send('Task deleted correctly')
         } catch (error) {
             res.status(500).json({ error: 'There was an error getting the tasks' })
+            console.error(error)
         }
     }
 
@@ -76,11 +85,18 @@ export class TaskController {
             /* Update the status of the Task*/
             const { status } = req.body
             req.task.status = status
-            await req.task.save()
 
+            // Updated By 
+            const data = { user: req.user._id, status}
+
+            // Update the status history
+            req.task.completedBy.push(data)
+
+            await req.task.save()
             res.status(200).send('Task status updated correctly')
         } catch (error) {
             res.status(500).json({ error: 'There was an error getting the tasks' })
+            console.error(error)
         }
     }
 }

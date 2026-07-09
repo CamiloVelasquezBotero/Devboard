@@ -1,5 +1,5 @@
 import { isAxiosError } from "axios";
-import { dashboardProjectSchema, type Project, type ProjectFormData } from "../types";
+import { dashboardProjectSchema, projectSchema, type Project, type ProjectFormData } from "../types";
 import api from "../utils/axios";
 
 type ProjectApiType = {
@@ -8,11 +8,13 @@ type ProjectApiType = {
 }
 
 export async function createProject(formData: ProjectFormData) {
-    /* Function with Fetch the API */
+    const token = localStorage.getItem('auth_token')
+    /* Function with Fetch API */
     const response = await fetch(`${import.meta.env.VITE_API_URL}/projects`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(formData)
     })
@@ -31,8 +33,16 @@ export async function createProject(formData: ProjectFormData) {
 
 /* TODO: add generic to the response obtained*/
 export async function getProjects() {
+    /* const token =  localStorage.getItem('auth_token')  // We used the interceptors in the config of axios to do this*/
+
     try {
         const { data } = await api('/projects')
+        // I used interceptors in the config axios to pass the Authorization jwttoken in every request
+        /* const { data } = await api('/projects', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }) */
         /* Validate with the Schema of zod to get the correct response */
         const response = dashboardProjectSchema.safeParse(data)
         if(!response.success) {
@@ -51,7 +61,11 @@ export async function getProjects() {
 export async function getProjectById(id:Project['_id']) {
     try {
         const { data } = await api(`/projects/${id}`)
-        return data
+        const response = projectSchema.safeParse(data)
+        if(response.success) {
+            return response.data
+        }
+       return data
     } catch (error) {
         if(isAxiosError(error) && error.response) {
             throw new Error(error.response.data.error)

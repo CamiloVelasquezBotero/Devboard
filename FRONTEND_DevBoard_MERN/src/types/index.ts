@@ -17,27 +17,17 @@ export type ForgotPasswordForm = Pick<Auth, 'email'>
 export type NewPasswordForm = Pick<Auth, 'password' | 'password_confirmation'>
 
 export type ConfirmToken = Pick<Auth, 'token'>
-/*  --------------------------------------------- PROJECTS ------------------------------------*/
 
-export const projectSchema = z.object({
-    _id: z.string(),
-    projectName: z.string(),
-    clientName: z.string(),
-    description: z.string(),
+/*  --------------------------------------------- USERS ------------------------------------*/
+
+export const userSchema = authSchema.pick({
+    name: true,
+    email: true
+}).extend({
+    _id: z.string()
 })
 
-/* We're gonna use a pick if the projectSchema changes */
-export const dashboardProjectSchema = z.array(
-    projectSchema.pick({
-        _id: true,
-        projectName: true,
-        clientName: true,
-        description: true,
-    })
-)
-
-export type Project = z.infer<typeof projectSchema> /* we infer from the zod schema created */
-export type ProjectFormData = Pick<Project, 'projectName' | 'clientName' | 'description'> /* 'we used the utility types */
+export type User = z.infer<typeof userSchema>
 
 /*  ---------------------------------------------- TASKS ----------------------------------------------*/
 
@@ -50,9 +40,52 @@ export const taskSchema = z.object({
     description: z.string(),
     project: z.string(),
     status: taskStatusSchema,
+    completedBy: z.array(z.object({
+        _id: z.string(),
+        user: userSchema,
+        status: taskStatusSchema
+    })),
     createdAt: z.string(),
     updatedAt: z.string()
 })
 
 export type Task = z.infer<typeof taskSchema>
 export type TaskFormData = Pick<Task, 'taskName' | 'description'>
+
+/*  --------------------------------------------- PROJECTS ------------------------------------*/
+
+export const projectSchema = z.object({
+    _id: z.string(),
+    projectName: z.string(),
+    clientName: z.string(),
+    description: z.string(),
+    manager: z.string(),
+    tasks: z.array(taskSchema)
+})
+
+/* We're gonna use a pick if the projectSchema changes */
+export const dashboardProjectSchema = z.array(
+    projectSchema.pick({
+        _id: true,
+        projectName: true,
+        clientName: true,
+        description: true,
+        manager: true
+    })
+)
+
+export type Project = z.infer<typeof projectSchema> /* we infer from the zod schema created */
+export type ProjectFormData = Pick<Project, 'projectName' | 'clientName' | 'description'> /* 'we used the utility types */
+
+/*  ---------------------------------------------- TEAM ----------------------------------------------*/
+
+const teamMemberSchema = userSchema.pick({
+    name: true,
+    email: true,
+    _id: true
+})
+
+export const teamMembersSchema = z.array(teamMemberSchema)
+
+export type TeamMember = z.infer<typeof teamMemberSchema>
+export type TeamMemberForm = Pick<TeamMember, 'email'>

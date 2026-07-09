@@ -40,3 +40,13 @@ export function taskBelongToProject(req: Request, res: Response, next: NextFunct
     /* If the validation is correct, then we pass to the next middleware or function */
     next()
 }
+
+export function hasAuthorization(req: Request, res: Response, next: NextFunction) {
+    /* we're gonna check if the id of the project belongs to the task*/
+    if (req.user._id.toString() !== req.project.manager.toString()) {
+        const error = new Error('action not permitted')
+        return res.status(400).json({ error: error.message })
+    }
+    /* If the validation is correct, then we pass to the next middleware or function */
+    next()
+}

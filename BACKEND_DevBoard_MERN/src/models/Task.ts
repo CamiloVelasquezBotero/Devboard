@@ -14,12 +14,17 @@ export type TaskStatus = typeof taskStatus[keyof typeof taskStatus]
 export type TaskType = Document & {
     taskName: string
     description: string
-    project: Types.ObjectId,
+    project: Types.ObjectId
     status: TaskStatus
+    completedBy: {
+        user: Types.ObjectId
+        status: TaskStatus
+    }[]
+    notes: Types.ObjectId[]
 }
 
 /* Create the Schema */
-const TaskSchema:Schema = new Schema({
+const TaskSchema: Schema = new Schema({
     taskName: {
         type: String,
         required: true,
@@ -38,8 +43,28 @@ const TaskSchema:Schema = new Schema({
         type: String,
         enum: Object.values(taskStatus), /* with "enum" we pass the array of the values that this status it will have */
         default: taskStatus.PENDING
-    }
-}, {timestamps: true})
+    },
+    completedBy: [
+        {
+            user: {
+                type: Types.ObjectId,
+                ref: 'User',
+                default: null
+            },
+            status: {
+                type: String,
+                enum: Object.values(taskStatus), /* with "enum" we pass the array of the values that this status it will have */
+                default: taskStatus.PENDING
+            }
+        }
+    ],
+    notes: [
+        {
+            type: Types.ObjectId,
+            ref: 'Note'
+        }
+    ]
+}, { timestamps: true })
 
 /* Create the Model and export it*/
 const Task = mongoose.model<TaskType>('Task', TaskSchema)

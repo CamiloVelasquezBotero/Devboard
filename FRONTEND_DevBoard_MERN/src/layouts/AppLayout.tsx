@@ -3,38 +3,47 @@ import { ToastContainer } from 'react-toastify' /* The component that we're gonn
 import 'react-toastify/dist/ReactToastify.css' /* Styles for react-toastify */
 import Logo from "../components/Logo"
 import NavMenu from "../components/NavMenu"
+import { useAuth } from "../hooks/useAuth"
+import { Navigate } from "react-router-dom"
 
 export default function AppLayout() {
-  return (
-    <>
-        <header
-            className="bg-gray-800 px-10"
-        >
-            <div className="max-w-screen-2xl mx-auto flex flex-col lg:flex-row justify-between items-center">
-                <div className="w-64 ml-10 mb-4">
-                    <Link to={'/'}>
-                        <Logo /> 
-                    </Link>
+    const { data, isError, isLoading } = useAuth()
+
+    if(isLoading) return 'Cargando...'
+    if(isError) return <Navigate  to={'/auth/login'} /> // Verify if the user is autehnticated
+
+    return (
+        <>
+            <header
+                className="bg-gray-800 px-10"
+            >
+                <div className="max-w-screen-2xl mx-auto flex flex-col lg:flex-row justify-between items-center">
+                    <div className="w-64 ml-10 mb-4">
+                        <Link to={'/'}>
+                            <Logo />
+                        </Link>
+                    </div>
+
+                    <NavMenu 
+                        name={data?.name}
+                    />
                 </div>
+            </header>
 
-                <NavMenu />
-            </div>
-        </header>
+            <section className="max-w-screen-2xl mx-auto mt-10 py-5 px-20">
+                <Outlet />
+            </section>
 
-        <section className="max-w-screen-2xl mx-auto mt-10 py-5 px-20">
-            <Outlet />
-        </section>
+            <footer className="py-5">
+                <p className="text-center">
+                    All Rights Reserved {new Date().getFullYear()}
+                </p>
+            </footer>
 
-        <footer className="py-5">
-            <p className="text-center">
-                All Rights Reserved {new Date().getFullYear()}
-            </p>
-        </footer>
-
-        <ToastContainer 
-            pauseOnHover={false}
-            pauseOnFocusLoss={false}
-        />
-    </>
-  )
+            <ToastContainer
+                pauseOnHover={false}
+                pauseOnFocusLoss={false}
+            />
+        </>
+    )
 }

@@ -223,4 +223,9 @@ export class AuthController {
             res.status(500).json({ error: 'There was an error' })
         }
     }
+
+    static user = async (req:Request, res:Response) => {
+        // as we alreay authenticate the user with the middleware "authenticate" then we're gonna pass the user
+        return res.json(req.user)
+    }
 }
