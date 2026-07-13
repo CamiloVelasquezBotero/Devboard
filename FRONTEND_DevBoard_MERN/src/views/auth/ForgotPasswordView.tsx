@@ -7,6 +7,7 @@ import { forgotPassword } from "../../api/AuthApi";
 import { toast } from "react-toastify";
 
 export default function ForgotPasswordView() {
+    "use no memo" // Fixed bug with react-hook-form "reseting the values of formData, bug with "react-compiler""
     const initialValues: ForgotPasswordForm = {
         email: ''
     }

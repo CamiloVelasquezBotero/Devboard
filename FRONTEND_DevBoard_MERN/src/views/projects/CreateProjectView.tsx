@@ -7,6 +7,7 @@ import type { ProjectFormData } from "../../types";
 import { createProject } from "../../api/ProjectApi";
 
 export default function CreateProjectView() {
+    "use no memo" // Fixed bug with react-hook-form "reseting the values of formData, bug with "react-compiler""
 
     const initialValues: ProjectFormData = {
         projectName: '',

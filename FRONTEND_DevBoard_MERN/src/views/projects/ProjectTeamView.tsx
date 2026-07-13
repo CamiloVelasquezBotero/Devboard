@@ -31,7 +31,7 @@ export default function ProjectTeamView() {
         }
     })
 
-    if (isLoading) return 'Cargando...'
+    if (isLoading) return 'Loading...'
     if (isError) return <Navigate to={'/404'} />
 
     if (data) return (

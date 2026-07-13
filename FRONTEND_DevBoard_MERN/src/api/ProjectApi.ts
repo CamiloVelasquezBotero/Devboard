@@ -1,5 +1,5 @@
 import { isAxiosError } from "axios";
-import { dashboardProjectSchema, projectSchema, type Project, type ProjectFormData } from "../types";
+import { dashboardProjectSchema, editProjectSchema, projectSchema, type Project, type ProjectFormData } from "../types";
 import api from "../utils/axios";
 
 type ProjectApiType = {
@@ -57,21 +57,35 @@ export async function getProjects() {
     }
 }
 
-/* TODO: add  or zod to the response obtained*/
 export async function getProjectById(id:Project['_id']) {
     try {
         const { data } = await api(`/projects/${id}`)
-        const response = projectSchema.safeParse(data)
+        const response = editProjectSchema.safeParse(data)
+        console.log(data)
         if(response.success) {
             return response.data
         }
-       return data
     } catch (error) {
         if(isAxiosError(error) && error.response) {
             throw new Error(error.response.data.error)
         }
     }
 }
+
+export async function getFullProject(id:Project['_id']) {
+    try {
+        const { data } = await api(`/projects/${id}`)
+        const response = projectSchema.safeParse(data)
+        if(response.success) {
+            return response.data
+        }
+    } catch (error) {
+        if(isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error)
+        }
+    }
+}
+
 export async function updateProject({formData, projectId}:ProjectApiType) {
     try {
         const { data } = await api.put<string>(`/projects/${projectId}`, formData)

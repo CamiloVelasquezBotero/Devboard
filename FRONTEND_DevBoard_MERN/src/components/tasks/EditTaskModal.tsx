@@ -14,15 +14,18 @@ type EditTaskModalProps = {
 }
 
 export default function EditTaskModal({ data, taskId }: EditTaskModalProps) {
+    "use no memo" // Fixed bug with react-hook-form "reseting the values of formData, bug with "react-compiler""
     const navigate = useNavigate()
     /* Get the params from the Url */
     const params = useParams()
     const projectId = params.projectId!
 
-    const { register, handleSubmit, reset, formState: { errors } } = useForm<TaskFormData>({ defaultValues: {
-        taskName: data.taskName,
-        description: data.description
-    } })
+    const { register, handleSubmit, reset, formState: { errors } } = useForm<TaskFormData>({
+        defaultValues: {
+            taskName: data.taskName,
+            description: data.description
+        }
+    })
 
     /* React-Query */
     const queryClient = useQueryClient()
@@ -32,15 +35,15 @@ export default function EditTaskModal({ data, taskId }: EditTaskModalProps) {
             toast.error(error.message)
         },
         onSuccess: (data) => {
-            queryClient.invalidateQueries({queryKey: ['project', projectId]})
-            queryClient.invalidateQueries({queryKey: ['task', taskId]})
+            queryClient.invalidateQueries({ queryKey: ['project', projectId] })
+            queryClient.invalidateQueries({ queryKey: ['task', taskId] })
             reset()
-            navigate(location.pathname, {replace: true})    /* Close The modal */
+            navigate(location.pathname, { replace: true })    /* Close The modal */
             toast.success(data)
         }
     })
 
-    const handleEditTask = (formData:TaskFormData) => {
+    const handleEditTask = (formData: TaskFormData) => {
         const data = { projectId, taskId, formData }
         mutate(data)
     }

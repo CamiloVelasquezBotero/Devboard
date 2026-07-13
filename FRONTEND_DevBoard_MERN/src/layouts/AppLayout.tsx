@@ -9,7 +9,7 @@ import { Navigate } from "react-router-dom"
 export default function AppLayout() {
     const { data, isError, isLoading } = useAuth()
 
-    if(isLoading) return 'Cargando...'
+    if(isLoading) return 'Loading...'
     if(isError) return <Navigate  to={'/auth/login'} /> // Verify if the user is autehnticated
 
     return (

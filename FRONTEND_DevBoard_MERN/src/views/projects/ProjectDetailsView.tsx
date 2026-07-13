@@ -1,6 +1,6 @@
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
-import { getProjectById } from "../../api/ProjectApi"
+import { getFullProject } from "../../api/ProjectApi"
 import AddTaskModal from "../../components/tasks/AddTaskModal"
 import TaskList from "../../components/tasks/TaskList"
 import EditTaskData from "../../components/tasks/EditTaskData"
@@ -19,7 +19,7 @@ export default function ProjectDetailsView() {
     /* React-Query */
     const { data, isLoading, isError } = useQuery({
         queryKey: ['project', projectId],
-        queryFn: () => getProjectById(projectId),
+        queryFn: () => getFullProject(projectId),
         /* The number of attemps we want to it to try */
         retry: false
     })
@@ -28,7 +28,7 @@ export default function ProjectDetailsView() {
     const canEdit = useMemo(() => data?.manager === user?._id, [data, user])
 
     /* Validating... */
-    if(isLoading) return 'Cargando...'
+    if(isLoading) return 'Loading...'
     if(isError) return <Navigate to={'/404'} />
 
     /* If the last validation is ok then we'll render the details of the Project */

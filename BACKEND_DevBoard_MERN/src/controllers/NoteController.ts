@@ -8,20 +8,20 @@ type NoteParams = {
 
 export class NoteController {
     static createNote = async (req:Request<{}, {}, INote>, res:Response) => {
-        const { content } = req.body
-        const note = new Note()
-        
-        // fill the field of the note
-        note.content = content
-        note.createdBy = req.user._id
-        note.task = req.task._id
-
-        // Add to the task
-        req.task.notes.push(note._id)
-
         try {
+            const { content } = req.body
+            const note = new Note()
+            
+            // fill the field of the note
+            note.content = content
+            note.createdBy = req.user._id
+            note.task = req.task._id
+    
+            // Add to the task
+            req.task.notes.push(note._id)
+            
             // Save The note and and the task modified
-            await Promise.allSettled([note.save(), req.task.save()])
+            await Promise.all([note.save(), req.task.save()])
             res.status(200).send('Note created successfully')
         } catch (error) {
             res.status(500).json({error: 'There was an error creating the note'})           

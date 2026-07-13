@@ -4,10 +4,10 @@ import { useMutation } from "@tanstack/react-query";
 import ErrorMessage from "../ErrorMessage";
 import type { TeamMemberForm } from "../../types";
 import { findUserByEmail } from "../../api/TeamApi";
-import { toast } from "react-toastify";
 import SearchResult from "./SearchResult";
 
 export default function AddMemberForm() {
+    "use no memo" // Fixed bug with react-hook-form "reseting the values of formData, bug with "react-compiler""
     const initialValues: TeamMemberForm = {
         email: ''
     }
@@ -20,7 +20,7 @@ export default function AddMemberForm() {
         mutationFn: findUserByEmail
     })
 
-    const handleSearchUser = async (formData:TeamMemberForm) => {
+    const handleSearchUser = async (formData: TeamMemberForm) => {
         const data = { projectId, formData }
         mutation.mutate(data)
     }
@@ -70,7 +70,7 @@ export default function AddMemberForm() {
             </form>
 
             <div>
-            {/* TODO: Agregar spinner */}
+                {/* TODO: Agregar spinner */}
                 {mutation.isPending && <p className="text-center mt-10">Cargando...</p>}
                 {mutation.error && <p className="text-center mt-10">{mutation.error.message}</p>}
                 {mutation.data && <SearchResult user={mutation.data} reset={resetData} />}

@@ -7,7 +7,8 @@ import type { UserRegistrationForm } from "../../types";
 import ErrorMessage from "../../components/ErrorMessage";
 
 export default function RegisterView() {
-  
+  "use no memo" // Fixed bug with react-hook-form "reseting the values of formData, bug with "react-compiler""
+
   const initialValues: UserRegistrationForm = {
     name: '',
     email: '',
@@ -137,10 +138,10 @@ export default function RegisterView() {
       </form>
 
       <nav className="mt-10 flex flex-col space-y-4">
-          <Link
-            className="text-center text-gray-300 font-normal hover:scale-102 transition"
-            to={'/auth/login'}
-          >¿do you already have an account? ¡Log in!</Link>
+        <Link
+          className="text-center text-gray-300 font-normal hover:scale-102 transition"
+          to={'/auth/login'}
+        >¿do you already have an account? ¡Log in!</Link>
       </nav>
     </>
   )

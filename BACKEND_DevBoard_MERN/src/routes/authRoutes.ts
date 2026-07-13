@@ -82,4 +82,42 @@ router.get('/user',
     AuthController.user
 )
 
+/*  ----------------------------------------- PROFILE -------------------------------------- */
+
+router.put('/profile',
+    authenticate,
+    body('name')
+        .notEmpty().withMessage('The name cannot be empty'),
+    body('email')
+        .isEmail().withMessage('Invalid Email'),
+    handleInputErrors,
+    AuthController.updateProfile
+)
+
+router.post('/update-password',
+    authenticate,
+    body('current_password')
+        .notEmpty().withMessage('The current password cannot be empty'),
+    body('password')
+        .isLength({ min: 8 }).withMessage('The password is too short. a minimum of "8" characters is required'),
+    body('password_confirmation').custom((value, {req}) => {
+        if(value !== req.body.password) {
+            throw new Error("The passwords doesn't match")
+        }
+        return true
+    }),
+    handleInputErrors,
+    AuthController.updatePassword
+)
+
+router.post('/check-password', 
+    authenticate,
+    body('password')
+        .notEmpty().withMessage('The password cannot be empty'),
+    handleInputErrors,
+    AuthController.checkPassword
+
+)
+
+
 export default router

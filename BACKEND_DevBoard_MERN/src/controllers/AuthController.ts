@@ -1,10 +1,8 @@
 import { Request, Response } from 'express'
 import User from '../models/User'
-import bcrypt from 'bcrypt'
 import { confirmPassword, hashPassword } from '../utils/auth'
 import Token from '../models/Token'
 import { generateToken } from '../utils/token'
-import { transporter } from '../config/nodemailer'
 import { AuthEmail } from '../emails/AuthEmail'
 import { generateJWT } from '../utils/jwt'
 
@@ -228,4 +226,71 @@ export class AuthController {
         // as we alreay authenticate the user with the middleware "authenticate" then we're gonna pass the user
         return res.json(req.user)
     }
+
+    static updateProfile = async (req:Request, res:Response) => {
+        try {
+            const { name, email } = req.body
+
+            // Check if the email doesn't exists or is the same of the user
+            const userExists = await User.findOne({email})
+            if(userExists && userExists._id.toString() !== req.user._id.toString()) {
+                const error = new Error('Email is already registered')
+                return res.status(409).json({ error: error.message })
+            }
+
+            // Update the user
+            req.user.name = name
+            req.user.email = email
+
+            // Save the user
+            await req.user.save()
+
+            return res.status(200).send('Profile updated correctly')
+        } catch (error) {
+            console.error('There was an error updating the profile', error)
+            res.status(500).json({ error: 'There was an error' })
+        }
+    }
+
+    static updatePassword = async (req:Request, res:Response) => {
+        try {
+            const { current_password, password } = req.body
+
+            // Check the if the current_password is correct
+            const user = await User.findById(req.user._id)
+            const isPasswordCorrect = await confirmPassword(current_password, user.password)
+            if(!isPasswordCorrect) {
+                const error = new Error('The current password is incorrect')
+                return res.status(409).json({ error: error.message })
+            }
+
+            // Update the password and save
+            user.password = await hashPassword(password)
+            await user.save()
+
+            return res.status(200).send('Password updated correctly ')
+        } catch (error) {
+            console.error('There was an error updating the profile', error)
+            res.status(500).json({ error: 'There was an error' })
+        }
+    }
+
+    static checkPassword = async (req:Request, res:Response) => {
+        try {
+            const { password } = req.body
+            const user = await User.findById(req.user._id)
+
+            const isPasswordCorrect = await confirmPassword(password, user.password)
+            if(!isPasswordCorrect) {
+                const error = new Error('The password is incorrect')
+                return res.status(401).json({error: error.message})
+            }
+
+            res.status(200).send('The password is correct')
+        } catch (error) {
+            console.error('There was an error checking the password')
+            res.status(500).json({error: 'There was an error'})
+        }
+    }
+    
 }

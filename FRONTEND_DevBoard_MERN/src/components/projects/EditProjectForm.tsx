@@ -12,6 +12,7 @@ type EditProjectFormProps = {
 }
 
 export default function EditProjectForm({data, projectId}:EditProjectFormProps) {
+  "use no memo" // Fixed bug with react-hook-form "reseting the values of formData, bug with "react-compiler""
   const navigate = useNavigate()
 
   const initialValues: ProjectFormData = {

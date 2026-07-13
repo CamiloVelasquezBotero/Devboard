@@ -10,7 +10,8 @@ type NewPasswordTokenProps = {
     token: ConfirmToken['token']
 }
 
-export default function NewPasswordForm({token}:NewPasswordTokenProps) {
+export default function NewPasswordForm({ token }: NewPasswordTokenProps) {
+    "use no memo" // Fixed bug with react-hook-form "reseting the values of formData, bug with "react-compiler""
     const navigate = useNavigate()
 
     const initialValues: NewPasswordForm = {

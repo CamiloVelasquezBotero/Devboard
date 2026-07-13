@@ -20,7 +20,7 @@ export default function EditTaskData() {
         enabled: !!taskId /* we'll convert the variable in boolean to enabled the queryFn if we got something */
     })
 
-    if (isLoading) return 'Cargando...'
+    if (isLoading) return 'Loading...'
     if(isError) return <Navigate to={'/404'} />
 
     if(data) return <EditTaskModal data={data} taskId={taskId} />

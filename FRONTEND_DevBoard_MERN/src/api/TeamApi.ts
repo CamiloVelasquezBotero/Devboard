@@ -5,9 +5,9 @@ import type { TeamMemberForm } from "../types";
 
 export async function  findUserByEmail ({projectId, formData}:{projectId: Project['_id'], formData: TeamMemberForm}) {
     try {
+        // TODO: Valid the data from axios with zod
         const url = `/projects/${projectId}/team/find`
         const { data } = await api.post(url, formData)
-        console.log(data)
         return data
     } catch (error) {
         if(isAxiosError(error) && error.response) {
@@ -19,6 +19,7 @@ export async function  findUserByEmail ({projectId, formData}:{projectId: Projec
 
 export async function addUserToProject ({projectId, id}:{projectId: Project['_id'], id: TeamMember['_id']}) {
     try {
+        // TODO: Valid the data from axios with zod
         const url = `/projects/${projectId}/team`
         const { data } = await api.post(url, { id })
         console.log(data)

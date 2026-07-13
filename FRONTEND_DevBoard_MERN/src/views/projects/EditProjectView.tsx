@@ -17,7 +17,7 @@ export default function EditProjectView() {
 
 
     /* Validating... */
-    if(isLoading) return 'Cargando...'
+    if(isLoading) return 'Loading...'
     if(isError) return <Navigate to={'/404'} />
 
     /* If the last validation is ok then we'll render the form to edit it */

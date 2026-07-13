@@ -9,6 +9,7 @@ import { createTask } from '../../api/TaskAPI';
 import { toast } from 'react-toastify';
 
 export default function AddTaskModal() {
+    "use no memo" // Fixed bug with react-hook-form "reseting the values of formData, bug with "react-compiler"";
     const location = useLocation()
     const navigate = useNavigate()
     const queryClient = useQueryClient()
@@ -41,12 +42,13 @@ export default function AddTaskModal() {
         onSuccess: (data) => {
             queryClient.invalidateQueries({queryKey: ['project', projectId]})
             toast.success(data)
-            reset() /* Reset The Form */
+            reset()
             navigate(location.pathname, {replace: true})    /* Close The modal */
         }
     })
 
     const handleCreateTask = (formData:TaskFormData) => {
+        console.log(formData)
         const data = {
             formData,
             projectId
