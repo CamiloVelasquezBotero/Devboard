@@ -5,7 +5,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { createNote } from "../../api/NoteApi"
 import { toast } from "react-toastify"
 import { useParams, useSearchParams } from "react-router-dom"
-import { useEffect } from "react"
 
 export default function AddNoteForm() {
     "use no memo" // Fixed bug with react-hook-form "reseting the values of formData, bug with "react-compiler""
@@ -19,7 +18,7 @@ export default function AddNoteForm() {
     const initialValues: NoteFormData = {
         content: ''
     }
-    const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm({ defaultValues: initialValues })
+    const { register, handleSubmit, reset, formState: { errors } } = useForm({ defaultValues: initialValues })
 
     // React Query
     const queryClient = useQueryClient()

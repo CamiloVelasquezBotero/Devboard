@@ -4,7 +4,7 @@ import { useMutation } from '@tanstack/react-query';
 import type { ConfirmToken } from '../../types';
 import { validateToken } from '../../api/AuthApi';
 import { toast } from 'react-toastify';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 type NewPasswordTokenProps = {
     token: ConfirmToken['token']

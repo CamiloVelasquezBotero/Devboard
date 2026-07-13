@@ -11,7 +11,7 @@ import { NoteController } from '../controllers/NoteController'
 
 const router = Router()
 
-// Protect all the routes when the user create a project or a task, to be authenticated
+// Protect all the routes when the user create or modify a project or a task, to be authenticated
 router.use(authenticate)
 
 router.post('/', 
@@ -33,8 +33,13 @@ router.get('/:id',
     ProjectController.getProjectById
 )
 
-router.put('/:id', 
-    param('id')
+/* To reuse the same route for a param, we can use the "route.param" of express.
+with this form we can pass it the middleware to validate the project and, remove it of the others routes*/
+router.param('projectId', ProjectExists)
+
+router.put('/:projectId',
+    hasAuthorization,
+    param('projectId')
         .isMongoId().withMessage('Invalid ID'),
     body('projectName')
         .notEmpty().withMessage('The name of the Project is obligatory'),
@@ -46,16 +51,15 @@ router.put('/:id',
     ProjectController.updateProject
 )
 
-router.delete('/:id', 
-    param('id').isMongoId().withMessage('Invalid ID'),
+router.delete('/:projectId',
+    hasAuthorization,
+    param('projectId').isMongoId().withMessage('Invalid ID'),
     handleInputErrors,
     ProjectController.deleteProject
 )
 
 /*  ----------------------------------------- ROUTES FOR TASKS -------------------------------------- */
 
-/* To reuse the same route for a param, we can use the "route.param" of express.
-with this form we can pass it the middleware to validate the project and, remove it of the others routes*/
 router.param('projectId', ProjectExists)
 
 router.post('/:projectId/tasks',

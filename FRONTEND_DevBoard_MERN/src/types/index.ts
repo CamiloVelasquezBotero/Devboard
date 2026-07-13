@@ -86,7 +86,7 @@ export const projectSchema = z.object({
     description: z.string(),
     manager: z.string(),
     tasks: z.array(taskProjectSchema),
-    team: z.array(userSchema.pick({_id: true}))
+    team: z.array(z.string())
 })
 
 /* We're gonna use a pick if the projectSchema changes */

@@ -1,6 +1,7 @@
 import mongoose, { Schema, Document, PopulatedDoc, Types } from 'mongoose' /* We import the mongoose ODM and the types */
-import { TaskType } from './Task'
+import Task, { TaskType } from './Task'
 import { UserType } from './User'
+import Note from './Note'
 
 /* Create the type of the model passing it throgh the generic type */
 export type ProjectType = Document & {
@@ -46,6 +47,21 @@ const ProjectSchema: Schema = new Schema({
         }
     ]
 }, { timestamps: true })
+
+// Middleware that executes when we do this action "deleteOne"
+ProjectSchema.pre('deleteOne', {document: true}, async function() {
+    const projectId = this._id
+    if(!projectId) return
+
+    // Also delete all the notes of the task  because the middleware of the "Task" only read "deleteOne"
+    const tasks = await Task.find({project: projectId})
+    for(const task of tasks) {
+        await Note.deleteMany({task: task._id})
+    }
+
+    // Delete all the tasks that has the id of the project
+    await Task.deleteMany({project: projectId})
+})
 
 /* Create the Model and export it*/
 const Project = mongoose.model<ProjectType>('Project', ProjectSchema)

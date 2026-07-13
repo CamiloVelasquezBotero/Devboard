@@ -3,7 +3,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import type { Project, Task, TaskFormData } from '../../types';
+import type { Task, TaskFormData } from '../../types';
 import TaskForm from './TaskForm';
 import { updateTask } from '../../api/TaskAPI';
 import { toast } from 'react-toastify';

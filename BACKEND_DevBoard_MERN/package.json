@@ -4,8 +4,10 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsx --watch ./src/index.ts",
-    "dev:api": "tsx --watch ./src/index.ts --api"
-  },
+    "dev:api": "tsx --watch ./src/index.ts --api",
+    "build": "tsc",
+    "start": "node dist/index.js"
+},
   "keywords": [],
   "author": "Camilo Velasquez Botero",
   "license": "ISC",

@@ -28,7 +28,7 @@ export default function ProjectDetailsView() {
     const canEdit = useMemo(() => data?.manager === user?._id, [data, user])
 
     /* Validating... */
-    if(isLoading) return 'Loading...'
+    if(isLoading && authLoading) return 'Loading...'
     if(isError) return <Navigate to={'/404'} />
 
     /* If the last validation is ok then we'll render the details of the Project */

@@ -56,28 +56,13 @@ export class ProjectController {
     }
 
     static updateProject = async (req:Request, res:Response) => {
-        const { id } = req.params
-        
         try {
-            /* as we already know that the validation pass it then we can update it directly */
-            const project = await Project.findById(id)
-            if(!project) {
-                const error = new Error('¡Project not found!')
-                return res.status(404).json({ error: error.message })
-            }
-
-            // Verify if the user is the manager of the project
-            if(project.manager.toString() !== req.user._id.toString()) {
-                const error = new Error('¡Only the manager can update this project!')
-                return res.status(404).json({ error: error.message }) 
-            }
-
             /* Update the Values of the project */
-            project.projectName = req.body.projectName
-            project.clientName = req.body.clientName
-            project.description = req.body.description
+            req.project.projectName = req.body.projectName
+            req.project.clientName = req.body.clientName
+            req.project.description = req.body.description
             /* Save the project */
-            await project.save()
+            await req.project.save()
             res.status(200).send('Proyect Updated')
         } catch (error) {
             console.log(`There was an error updating the project: ${error}`)
@@ -85,25 +70,8 @@ export class ProjectController {
     }
 
     static deleteProject = async (req:Request, res:Response) => {
-        const { id } = req.params
-        
         try {
-            /* as we already know that the validation pass it then we can update it directly */
-            /* const project = await Project.findByIdAndDelete(id) //we can do this but is better confirm that the user wants to delete it */
-            const project = await Project.findById(id)
-            /* check if the user has the privileges and the project exists*/
-            if(!project) {
-                const error = new Error('¡Project not found!')
-                return res.status(404).json({ error: error.message })
-            }
-
-            // Verify if the user is the manager of the project
-            if(project.manager.toString() !== req.user._id.toString()) {
-                const error = new Error('¡Only the manager can delete this project!')
-                return res.status(404).json({ error: error.message }) 
-            }
-
-            await project.deleteOne()
+            await req.project.deleteOne()
             res.status(200).send('Proyect Deleted')
         } catch (error) {
             console.log(`There was an error deleting the project: ${error}`)
