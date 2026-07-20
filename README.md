@@ -12,6 +12,15 @@
   Create projects, organize tasks through a Kanban-style board with drag &amp; drop, collaborate with team members, and track every change — all behind a secure JWT-based authentication system.
 </p>
 
+<p align="center">
+  <a href="https://devboardapp-six.vercel.app"><strong>🌐 Live Demo</strong></a>
+</p>
+
+<p align="center">
+  <strong>Test Credentials:</strong><br/>
+  📧 <strong>Email:</strong> <code>test@test.com</code> &nbsp;|&nbsp; 🔑 <strong>Password:</strong> <code>password</code>
+</p>
+
 ---
 
 ## ✨ Features
