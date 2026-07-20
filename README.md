@@ -13,12 +13,16 @@
 </p>
 
 <p align="center">
-  <a href="https://devboardapp-six.vercel.app"><strong>🌐 Live Demo</strong></a>
+  <strong>🌐 Live Demo:</strong> <a href="https://devboardapp-six.vercel.app">https://devboardapp-six.vercel.app</a>
 </p>
 
 <p align="center">
-  <strong>Test Credentials:</strong><br/>
+  <strong>Staff Demo Account Credentials:</strong><br/>
   📧 <strong>Email:</strong> <code>test@test.com</code> &nbsp;|&nbsp; 🔑 <strong>Password:</strong> <code>password</code>
+</p>
+
+<p align="center">
+  ⚠️ <strong>Note:</strong> The first request may take <strong>30 to 60 seconds</strong> to respond as the server spins up. If this occurs, please be patient.
 </p>
 
 ---
